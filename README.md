@@ -439,3 +439,19 @@ const { data: items, httpConfig, loading } = useFetch(url);
     ))}
 </ul>;
 ```
+
+## Loading no POST
+
+- Podemos bloquear ações indevidas em outras request também, como no POST;
+- Uma ação interessante é remover a ação de adicionar outro item enqquanto o request ainda não finalizou;
+
+colocamos um ternario no submit do post para que o usuario nao envie dados incorretos
+
+```tsx
+{
+  loading && <input type="submit" disable value={"Aguarde..."} />;
+}
+{
+  !loading && <input type="submit" value={"Criar Produto"} />;
+}
+```
