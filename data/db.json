@@ -34,6 +34,16 @@
       "name": "Short",
       "price": "39.9",
       "id": 7
+    },
+    {
+      "name": "Caderno",
+      "price": "9.98",
+      "id": 8
+    },
+    {
+      "name": "Camisinha",
+      "price": "5",
+      "id": 9
     }
   ]
 }

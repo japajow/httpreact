@@ -6,7 +6,7 @@ const url = "http://localhost:3000/products";
 
 function App() {
   const [products, setProducts] = useState([]);
-  const { data: items } = useFetch(url);
+  const { data: items, httpConfig } = useFetch(url);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
@@ -14,7 +14,6 @@ function App() {
   //   dadosAPI();
   // }, []);
 
-  
   // const dadosAPI = async () => {
   //   const res = await fetch(url);
   //   const data = await res.json();
@@ -29,17 +28,19 @@ function App() {
       price,
     };
 
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(product),
-    });
+    // const res = await fetch(url, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(product),
+    // });
 
-    const addedProduct = await res.json();
+    // const addedProduct = await res.json();
 
-    setProducts((prevProducts) => [...prevProducts, addedProduct]);
+    // setProducts((prevProducts) => [...prevProducts, addedProduct]);
+
+    httpConfig(product, "POST");
     setName("");
     setPrice(0);
   };

@@ -285,7 +285,7 @@ Vamoltamos no App.js
     temos que fazer um ternario para so quando tiver algum dado ele apresente na tela
 
     <ul>
-        {!!items && items.map((product) => (
+        {items && items.map((product) => (
           <li key={product.id}>
             {product.name} - R$ {product.price}
           </li>
@@ -294,4 +294,99 @@ Vamoltamos no App.js
 
 
 
+```
+
+## Refatorando o POST
+
+- Podemos utilizar o mesmo hook para incluir uma etapa de POST;
+- Vamos criar um novo useEffect que mapeia uma outra mudança de estado;
+- Após ela ocorrer executamos a adição de produto;
+- Obs nem sempre reutilizar um hook é a melhor estratégia;
+
+useFetch.js
+
+```tsx
+// /Criamos uma variavel de estado que configura quais method ,headres etc
+const [config, setConfig] = useState(null);
+
+// Criamos um estado que selecioa o method
+const [method, setMethod] = useState(null);
+
+// E por ultimo criamos um callFetch booleano
+const [callFetch, useCallFetch] = useState(false);
+```
+
+Colocamos o callFetch como depedencia no useEffect()
+sempre que ele for alterado , chamamos o useEffect() novamente
+
+```tsx
+// useEffect(() => {
+//   const fetchData = async () => {
+//     const res = await fetch(url);
+//     const json = await res.json();
+//     setData(json);
+//   };
+
+//   fetchData();
+}, [url, callFetch]);
+```
+
+Criamos um novo useEffect() para controlar nosso POST , nelle passamos o config como depedente
+
+```tsx
+useEffect(() => {
+  // fazemos uma checagem ,se for POST
+
+  const httpRequest = async () => {
+    // criamos uma variavel fetchOptions aonde ele recebe um array da url e configuracoes
+    if (method === "POST") {
+      let fetchOptions = [url, config]; // url e config e dinamico sempre muda
+
+      const res = await fetch(...fetchOptions);
+
+      const json = await res.json();
+
+      setCallfetch(json);
+    }
+  };
+
+  httpRequest(); // com isso sabemos se e um POST , GEt, UPDATE etc
+}, [config, method, url]);
+```
+
+Criamos uma funcao que controla o config
+
+```tsx
+// recebe dados e o metodo da requisicao
+const httpConfig = (data, method) => {
+  //fazemos um if verificando se e POST
+  if (method === "POST") {
+    //aqui fazemos a configuracao
+    setConfig({
+      method,
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringfy(data),
+    });
+  }
+};
+```
+
+Retornamos no nosso return do useFetch()
+
+```tsx
+return { data, httpConfig };
+```
+
+Agora no App.js
+
+```tsx
+const { data: items, httpConfig } = useFetch(url);
+```
+
+Vamos agora comentar o useEffect que estava usando o POST e no lugar usar a nossa nova forma de chamar o POST
+
+```tsx
+httpConfig(product, "POST"); //passando o produtos e o metodo
 ```
