@@ -223,3 +223,75 @@ setPtoducts((prevProducts) => [...prevProducts, addedProduct]);
 setname("");
 setPrice(0);
 ```
+
+## Custom hook para o fetch
+
+- É normal dividr funções que podem ser reaproveitadas em hooks;
+- Esta técnica é chamada de custom hook, e vamos criar um para o resgate de dados;
+- Os hooks geralmente ficam na pasta hooks;
+- Devemos utilizar o padrão useName;
+- Basicamente uma função e exportamos ela;
+- Vamos ver isto na prática!!
+
+Criando src/hooks/useFetch
+
+```tsx
+import { useState, useEffect } from "react";
+
+// Criamos a funcao e criamos nela os estados
+
+export const useFetch = (url) => {
+  const [data, setData] = useState(null); // de comeco nao sabemos os dados que vem entao e nulo
+
+  // criamos um request chamando apenas uma vez passando uma depedencia que e a url , se ela atualizar chama noamente
+
+  useEffect(() => {
+    // criando uma funcao asyncrona
+    const fetchData = async () => {
+      const res = await fetch(url);
+      const json = res.json();
+      setData(json);
+    };
+    //chamamos a funcao fetchData para executar ela
+    fetchData();
+  }, [url]);
+
+  // vamos exportar a nosa data
+  return { data };
+};
+```
+
+Vamoltamos no App.js
+
+```tsx
+
+    Comentamos nosso useEffect() que criamos na aula anterios , pois a ideia e usar o nosso custom Hook
+
+    Importamos nosso Hook criado acima useFetch()
+
+    const {data: items } = useFecth(url) // renomeando a data para items
+
+    // Passamos agora o items para listar no map()
+    Porem vai dar erro pq inicialmente e nullo os dados
+
+    <ul>
+        {items.map((product) => (
+          <li key={product.id}>
+            {product.name} - R$ {product.price}
+          </li>
+        ))}
+      </ul>
+
+    temos que fazer um ternario para so quando tiver algum dado ele apresente na tela
+
+    <ul>
+        {!!items && items.map((product) => (
+          <li key={product.id}>
+            {product.name} - R$ {product.price}
+          </li>
+        ))}
+      </ul>
+
+
+
+```
