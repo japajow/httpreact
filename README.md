@@ -191,16 +191,35 @@ const handleSubmit = async (e) => {
 
   // vamos fazer a requisicao
   // passamos a url e no segundo passamos  o method terceiro e o body
-  const res = await fetch(url,{
-      method: "POST",
-      headers: {
-          //aqui passamos a forma json 
-          "Contet-type": "application/json"
-      },
-      body: JSON.stringfy(product) // precisamos transformas os dados em json 
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      //aqui passamos a forma json
+      "Contet-type": "application/json",
+    },
+    body: JSON.stringfy(product), // precisamos transformas os dados em json
   });
 };
 ```
-Ate aqui conseguimos adicionar na nossa API pelo formulario criado acima 
 
+Ate aqui conseguimos adicionar na nossa API pelo formulario criado acima
 
+## Carregamento dinâmico de dados
+
+- Se a requisição foi feita com sucesso, podemos **adicionar o item a lista após e rerquest**
+- Isso torna nossa aplicação mais performática;
+- Utilizaremos o **set do useState** para isso;
+- Vamos ver isto na prática;
+
+```tsx
+//carregamento dentro do useEffect()
+//Criamos uma variavel para recuperar os produtos e json -> string
+const addedProduct = await res.json();
+
+// sabemos que temos o estado antigo pelo previous e passando o novo produto
+setPtoducts((prevProducts) => [...prevProducts, addedProduct]);
+
+//Resetando o estados dos inputs
+setname("");
+setPrice(0);
+```

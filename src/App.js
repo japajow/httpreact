@@ -6,7 +6,7 @@ const url = "http://localhost:3000/products";
 function App() {
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     dadosAPI();
@@ -26,14 +26,19 @@ function App() {
       price,
     };
 
-    const res = await fetch(url,{
+    const res = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
       },
-      body: JSON.stringify(product)
-    })
+      body: JSON.stringify(product),
+    });
 
+    const addedProduct = await res.json();
+
+    setProducts((prevProducts) => [...prevProducts, addedProduct]);
+    setName("");
+    setPrice(0);
   };
 
   return (
