@@ -106,3 +106,101 @@ Beleza , agora vamos fazer um looping para percorrer cada dados resgatado pela A
   ))}
 </ul>
 ```
+
+## Adicionando dados com React
+
+- Para adicionar um item vamos precisar resgatar os dados form com o **useState()**;
+- Reunir eles em uma **função após o submit** e enviar request de POST para nossa API.
+- O processo é bem parecido com o de resgate de dados, mas agora estamos **enviando dados**
+- Vamos ver na prática
+
+> Adicionando produtos
+> Criando uma funcao
+
+```tsx
+const handleSubmit = async (e) => {};
+```
+
+Primeiramente antes de tudo precisamos resgatar os dados do produto ,vamos setar um estado para guardar eles
+
+```tsx
+const [name, setName] = useState("");
+const [price, setPrice] = useState("");
+```
+
+Criando um formulario para adicionar produtos na API
+
+```tsx
+<div className="add-product">
+  <form onSubmit={handleSubmit}>
+    <label htmlFor="nome"> Nome Produto </label>
+    <input
+      type="text"
+      name="nome"
+      id="nome"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+
+    <label htmlFor="preco"> Preço </label>
+    <input
+      type="text"
+      name="preco"
+      id="preco"
+      value={price}
+      onChange={(e) => setPrice(e.target.value)}
+    />
+  </form>
+</div>
+```
+
+Estilizando nosso form produtos
+
+```css
+.add-product {
+  border-top: 1px solid #000;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+form input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+```
+
+Preenchendo nosso handleSubmit
+
+```tsx
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  //criando objeto que ira preencher os dados na API
+
+  const product = {
+    name,
+    price,
+  };
+
+  // vamos fazer a requisicao
+  // passamos a url e no segundo passamos  o method terceiro e o body
+  const res = await fetch(url,{
+      method: "POST",
+      headers: {
+          //aqui passamos a forma json 
+          "Contet-type": "application/json"
+      },
+      body: JSON.stringfy(product) // precisamos transformas os dados em json 
+  });
+};
+```
+Ate aqui conseguimos adicionar na nossa API pelo formulario criado acima 
+
+
