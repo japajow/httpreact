@@ -6,7 +6,7 @@ const url = "http://localhost:3000/products";
 
 function App() {
   const [products, setProducts] = useState([]);
-  const { data: items, httpConfig } = useFetch(url);
+  const { data: items, httpConfig , loading} = useFetch(url);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
 
@@ -48,8 +48,9 @@ function App() {
   return (
     <div className="App">
       <h1>Lista de produtos</h1>
+     
       <ul>
-        {items &&
+       {!loading &&  items &&
           items.map((product) => (
             <li key={product.id}>
               {product.name} - R$ {product.price}

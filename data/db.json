@@ -44,6 +44,16 @@
       "name": "Camisinha",
       "price": "5",
       "id": 9
+    },
+    {
+      "name": "monitor",
+      "price": "500",
+      "id": 10
+    },
+    {
+      "name": "Camera",
+      "price": "1200",
+      "id": 11
     }
   ]
 }

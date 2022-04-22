@@ -390,3 +390,52 @@ Vamos agora comentar o useEffect que estava usando o POST e no lugar usar a noss
 ```tsx
 httpConfig(product, "POST"); //passando o produtos e o metodo
 ```
+
+## Estado de Loading
+
+- Quando fizermos requisições para APIs é normal que haja um intervalo de loading entre a requisição e o recebimento da resposta;
+- Podemos fazer isso no nosso hook tambem;
+- Identificar quando começa e termina este estado;
+
+No nosso useFetch.js
+
+```tsx
+//Vamos setar mais um estado de loading
+const [loading, setLoading] = useState(false);
+
+// Agora temo que colocar aonde comeca e aonde termina ???
+//Colocamos o useEffect fecthData
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+setLoading(true); // comeca
+//   const res = await fetch(url);
+//   const json = await res.json();
+//   setData(json);
+setLoading(false); // termina
+// };
+
+// retornamos nosso loading
+
+return { data, httpConfig, loading };
+```
+
+App.js
+
+```tsx
+//passamos nosso loading
+
+const { data: items, httpConfig, loading } = useFetch(url);
+
+// agora usamos ele no HTML apresentendo ou nao com ternario
+
+<ul>
+  {!loading &&
+    items &&
+    items.map((product) => (
+      <li key={product.id}>
+        {product.name} - R$ {product.price}
+      </li>
+    ))}
+</ul>;
+```
