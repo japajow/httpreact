@@ -49,4 +49,60 @@ Criando um scripts no package.json para iniciar nosso db
 
 Agora damos um npm run server
 
+## Resgatando dados da API
 
+Importando os use que vamos utilizar
+
+App.js
+
+```tsx
+import { useEffect, useState } from "react";
+
+//Criando uma variavel url para guardar nossa URL da API
+const url = "http://localhost:3000/products";
+
+// Criando o estado que salve os dados vindop da API
+
+const [products, setProducts] = useState([]);
+
+//Restagando os dados usando useEffect() para ser acioanda apenas uma vez
+useEffect(() => {
+
+    // criamos uma variavel que faz a busca com fetch() passando a url da API
+    const res = await fetch(url)
+
+    // Como ele vem em string precisamos transformar ele em json()
+    const data = await res.json()
+
+    // Agora setamos o nosso setProducts() para armazenar esse data
+    setProducts(data)
+
+}, [] // Nesse array deixamos vazio pq nao a nenhuma depedencia nesse useEffect que precisamos setar);
+```
+
+No useEffetc() nao podemos usar async nele , pois gera um warning ou erro , para solucionar esse erro
+vamos criar uma funcao que pega nosso dados da API e chame essa funcao criada no useEffect()
+
+```tsx
+useEffect(() => {
+  dadosAPI();
+}, []);
+
+const dadosAPI = async () => {
+  const res = await fetch(url);
+  const data = await res.json();
+  setProducts(data);
+};
+```
+
+Beleza , agora vamos fazer um looping para percorrer cada dados resgatado pela API
+
+```tsx
+<ul>
+  {products.map((product) => (
+    <li key={product.id}>
+      {product.name} - R$ {product.price}
+    </li>
+  ))}
+</ul>
+```
